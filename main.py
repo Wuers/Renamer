@@ -2,65 +2,52 @@
 #22.07.2023
 import customtkinter as ctk
 
+#methods
+def 
+
 #button
 ctk.set_appearance_mode("system")
 ctk.set_default_color_theme("blue")
 
-buttonapp = ctk.CTk()
-buttonapp.geometry("400x240")
-buttonapp.title("Button.exe")
-
-def button_function():
-    print("button pressed")
-
-button = ctk.CTkButton(master=buttonapp, text = "Button", command = button_function)
-button.place(relx=0.5, rely=0.5, anchor = ctk.CENTER)
-
-#buttonapp.mainloop()
-
 #window
 window =ctk.CTk()
-window.title('custom app')
+window.title('Renamer by Wuers')
 window.geometry('600x400')
+#label
+title_label = ctk.CTkLabel(window,height=20,width=100,
+                           padx=10, pady=20,
+                           text="Select Files and Rules:")
+title_label.pack()
 
-#widgets
-label = ctk.CTkLabel(master = window, text = 'A ctk label')
-label.pack()
+#FRAME 1 - Adding files and live counter
+frame_1 = ctk.CTkFrame (window,
+                        width=200,
+                        height = 50)
+frame_1.pack(pady=10)
+#add_button
+file_add_button = ctk.CTkButton(master = frame_1,
+                                text='Add files'
+                                )
+file_add_button.pack()
+#live Counter
 
-#button
-def add_button_func():
-    print("i will be usefull some day :)")
 
-add_button = ctk.CTkButton (master = window, text = "ADD", command = add_button_func)
-add_button.pack()
+#FRAME 2 - Adding rules and rules list (preview??)
+frame_2 = ctk.CTkFrame (window,
+                        width=200,
+                        height = 50)
+frame_2.pack(pady=10)
+#add_button
+rule_add_button = ctk.CTkButton(master = frame_2,
+                                text='Add rules'
+                                )
+rule_add_button.pack()
 
-#frame
-frame = ctk.CTkFrame(master = window)
-frame.pack()
+#frame 3 - Preview of changes
+#frame 4 - Rename execute button
+#frame 5 - excel import export buttons
 
-#slider
-slider = ctk.CTkSlider (master = frame)
-slider.pack(padx = 20, pady=20)
 
-#switch
-switch = ctk.CTkSwitch(window, text='Exercise Switch',
-                       switch_height=30,
-                       switch_width=50,
-                       corner_radius=2,
-                       button_hover_color='yellow',
-                       progress_color="white",
-                       fg_color='red',
-                       border_color='blue',
-                       button_color='green')
-switch.pack()
-
-#switch example
-def switch_event():
-    print("switch toggled, current value:", switch_var.get())
-switch_var = ctk.StringVar(value="on")
-switch2 = ctk.CTkSwitch(window, text="CTkSwitch", command=switch_event,
-                                 variable=switch_var, onvalue="on", offvalue="off")
-switch2.pack()
 
 #RUN
 window.mainloop()
