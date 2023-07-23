@@ -62,5 +62,17 @@ switch2 = ctk.CTkSwitch(window, text="CTkSwitch", command=switch_event,
                                  variable=switch_var, onvalue="on", offvalue="off")
 switch2.pack()
 
+#Setting entry and variables
+def button3_func():
+    x = entry.get() 
+    y = int(x) * 2
+    print ("Dobuled value is:", y)
+
+entry = ctk.CTkEntry(window)
+entry.pack()
+
+button3= ctk.CTkButton(window, text="Double it!", command=button3_func)
+button3.pack()
+
 #RUN
 window.mainloop()
