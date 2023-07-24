@@ -1,14 +1,23 @@
 
 #22.07.2023
 import customtkinter as ctk
+from tkinter import filedialog as fd
+import pandas as pd
 
 #variables
 files_numb = 4
 #methods
 def add_button_func():
-    counter_output.set('counter_output value here')
+    #1 selecting files
+    file_list = fd.askopenfilenames(
+        initialdir='C:/Users'
+        )
+    #2 couting files
+    selected_files_numb = len(file_list)
+    #3 displaying number of files
+    counter_label.configure(text = f'({selected_files_numb}) files are selected')
 
-#button
+#general
 ctk.set_appearance_mode("system")
 ctk.set_default_color_theme("blue")
 
@@ -34,13 +43,13 @@ file_add_button = ctk.CTkButton(master = frame_1,
                                 )
 file_add_button.pack()
 #live Counter - button updated label
-counter_output = ctk.StringVar()
 counter_label = ctk.CTkLabel(
-    master=window,
-    text = 'This is Selected files counter label',
-    textvariable = counter_output
+    master = frame_1,
+    text = 'Files not selected'
 )
 counter_label.pack()
+
+#preview table?
 
 #FRAME 2 - Adding rules and rules list (preview??)
 frame_2 = ctk.CTkFrame (window,
@@ -53,10 +62,10 @@ rule_add_button = ctk.CTkButton(master = frame_2,
                                 )
 rule_add_button.pack()
 
-#frame 3 - Preview of changes
+#frame 3 - Preview of changes - table with files and aplied rules in e.g red 
+
 #frame 4 - Rename execute button
 #frame 5 - excel import export buttons
-
 
 
 #RUN
