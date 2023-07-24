@@ -1,6 +1,7 @@
 
 #22.07.2023
 import customtkinter as ctk
+from tkinter import ttk
 
 #button
 ctk.set_appearance_mode("system")
@@ -81,7 +82,8 @@ frame4.pack(pady=10)
 def button4_func():
     button4_value = entry4.get()
     label4.configure(text =f'Selected {button4_value} files')
-    #label4['text'] = 'some ottter'
+    # label4['text'] = 'some ottter'
+    # print(label.configure())
 
 
 entry4 = ctk.CTkEntry(frame4)
@@ -91,6 +93,7 @@ button4 = ctk.CTkButton(master = frame4,
                         text='config update',
                         command=button4_func)
 button4.pack(side = 'left')
+
 label4 =ctk.CTkLabel (master = frame4, text = "Files not selected")
 label4.pack(padx=10)
 
@@ -98,19 +101,13 @@ label4.pack(padx=10)
 frame5 = ctk.CTkFrame (master = window)
 frame5.pack(pady=10)
 
-def button4_func():
-    button4_value = entry4.get()
-    label4.configure(text =f'Selected {button4_value} files')
-    #label4['text'] = 'some ottter'
-entry5 = ctk.CTkEntry(frame4)
-entry5.pack(side = 'left', padx=10)
-button5 = ctk.CTkButton(master = frame5, 
-                        text='Exercise',
-                        command=button5_func)
-button4.pack(side = 'left')
-label4 =ctk.CTkLabel (master = frame5, text = "Files not selected")
-label4.pack(padx=10)
-
+def reset_func():
+    label4['text'] = 'some text'
+    
+button5 = ttk.Button(master = frame5, 
+                        text='Reset',
+                        command=reset_func)
+button5.pack()
 
 #RUN
 window.mainloop()
