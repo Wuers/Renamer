@@ -62,17 +62,39 @@ switch2 = ctk.CTkSwitch(window, text="CTkSwitch", command=switch_event,
                                  variable=switch_var, onvalue="on", offvalue="off")
 switch2.pack()
 
-#Setting entry and variables
+#Setting entry and variables with GET()
 def button3_func():
-    x = entry.get() 
+    x = entry3.get() 
     y = int(x) * 2
     print ("Dobuled value is:", y)
 
-entry = ctk.CTkEntry(window)
-entry.pack()
+entry3 = ctk.CTkEntry(window)
+entry3.pack()
 
 button3= ctk.CTkButton(window, text="Double it!", command=button3_func)
 button3.pack()
+
+#updating label with .config method:
+frame4 = ctk.CTkFrame (master = window)
+frame4.pack(pady=10)
+
+def button4_func():
+    button4_value = entry4.get()
+    #print(button4_value)
+    #update label (text)
+    label4.configure(text ="some other text")
+
+
+entry4 = ctk.CTkEntry(frame4)
+entry4.pack(side = 'left', padx=10)
+
+button4 = ctk.CTkButton(master = frame4, 
+                        text='config update',
+                        command=button4_func)
+button4.pack(side = 'left')
+label4 =ctk.CTkLabel (master = frame4, text = "Value")
+label4.pack()
+
 
 #RUN
 window.mainloop()

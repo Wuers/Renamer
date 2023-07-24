@@ -2,11 +2,11 @@
 #22.07.2023
 import customtkinter as ctk
 
+#variables
 files_numb = 4
 #methods
 def add_button_func():
-    print ("Selected files:", files_numb)
-    output_counter.set('output_counter value')
+    counter_output.set('counter_output value here')
 
 #button
 ctk.set_appearance_mode("system")
@@ -34,11 +34,11 @@ file_add_button = ctk.CTkButton(master = frame_1,
                                 )
 file_add_button.pack()
 #live Counter - button updated label
-output_counter = ctk.StringVar()
+counter_output = ctk.StringVar()
 counter_label = ctk.CTkLabel(
     master=window,
     text = 'This is Selected files counter label',
-    textvariable = output_counter
+    textvariable = counter_output
 )
 counter_label.pack()
 
