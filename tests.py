@@ -80,9 +80,8 @@ frame4.pack(pady=10)
 
 def button4_func():
     button4_value = entry4.get()
-    #print(button4_value)
-    #update label (text)
-    label4.configure(text ="some other text")
+    label4.configure(text =f'Selected {button4_value} files')
+    #label4['text'] = 'some ottter'
 
 
 entry4 = ctk.CTkEntry(frame4)
@@ -92,8 +91,25 @@ button4 = ctk.CTkButton(master = frame4,
                         text='config update',
                         command=button4_func)
 button4.pack(side = 'left')
-label4 =ctk.CTkLabel (master = frame4, text = "Value")
-label4.pack()
+label4 =ctk.CTkLabel (master = frame4, text = "Files not selected")
+label4.pack(padx=10)
+
+#exercise
+frame5 = ctk.CTkFrame (master = window)
+frame5.pack(pady=10)
+
+def button4_func():
+    button4_value = entry4.get()
+    label4.configure(text =f'Selected {button4_value} files')
+    #label4['text'] = 'some ottter'
+entry5 = ctk.CTkEntry(frame4)
+entry5.pack(side = 'left', padx=10)
+button5 = ctk.CTkButton(master = frame5, 
+                        text='Exercise',
+                        command=button5_func)
+button4.pack(side = 'left')
+label4 =ctk.CTkLabel (master = frame5, text = "Files not selected")
+label4.pack(padx=10)
 
 
 #RUN
