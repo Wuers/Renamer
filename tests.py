@@ -2,6 +2,7 @@
 #22.07.2023
 import customtkinter as ctk
 from tkinter import ttk
+import dataframe_functions as dff
 
 #button
 ctk.set_appearance_mode("system")
@@ -108,6 +109,8 @@ button5 = ttk.Button(master = frame5,
                         text='Reset',
                         command=reset_func)
 button5.pack()
+
+dff.wuer_func()
 
 #RUN
 window.mainloop()
