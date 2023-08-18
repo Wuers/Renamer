@@ -4,7 +4,9 @@ import customtkinter as ctk
 from tkinter import filedialog as fd
 import dataframe_functions
 
-#METHODS
+file_list = []
+
+#button functions
 def add_button_func():
     #1 selecting files
     file_list = fd.askopenfilenames(
@@ -14,6 +16,7 @@ def add_button_func():
     selected_files_numb = len(file_list)
     #3 displaying number of files
     counter_label.configure(text = f'({selected_files_numb}) files are selected')
+    return file_list
 
 #GENERAL
 ctk.set_appearance_mode("system")
@@ -42,6 +45,7 @@ file_add_button = ctk.CTkButton(master = frame_1,
                                 command=add_button_func
                                 )
 file_add_button.pack()
+
 
 #testing new button with methods in another file
 #file_add_button2 = ctk.CTkButton(master = frame_1,
