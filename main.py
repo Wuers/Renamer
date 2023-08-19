@@ -4,7 +4,7 @@ import customtkinter as ctk
 from tkinter import filedialog as fd
 from tkinter import ttk
 import sys
-import pandas as pd
+# import pandas as pd
 import dataframe_functions
 
 file_names_list = []
@@ -19,10 +19,12 @@ def add_button_func():
     
     global file_names_list
     def finding_names_from_list(file_list):
+        global format_index
         new_list = []
         for file in file_list:
             name_start_index = (file.rfind('/'))+1
-            name = file[name_start_index:]
+            format_index = (file.rfind('.'))
+            name = file[name_start_index:format_index]
             new_list.append(name)
         return new_list
     
@@ -34,11 +36,11 @@ def add_button_func():
     counter_label.configure(text = f'({selected_files_numb}) files are selected')
 
 def  refresh():
-    print (f'refreshing - file list is: {file_names_list}')
-    for i in range(10):
-        number=i+1
-        file_name = 'nazwa pliku'
-        format = '.pdf'
+    print (f'refreshing - file names list is: {file_names_list}')
+    for file in (file_names_list):
+        number=(file_names_list.index(file))+1
+        file_name = file
+        format = file[format_index:]
         date = '10.10.2023'
         data = [number, file_name, format, date]
         table1.insert(parent ='', index = 'end', values = data)
@@ -98,14 +100,14 @@ table1.heading('file_name', text = 'File name')
 table1.heading('format', text = 'Format')
 table1.heading('date', text = 'Date')
 
-for i in range(10):
+"""for i in range(10):
     number=i+1
     file_name = 'nazwa pliku'
     format = '.pdf'
     date = '10.10.2023'
     data = [number, file_name, format, date]
     table1.insert(parent ='', index = 'end', values = data)
-
+"""
 table1.pack()
 
 #FRAME 2 - Adding rules and rules list (preview??)
