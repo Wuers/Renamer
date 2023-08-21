@@ -12,20 +12,29 @@ file_names_list = []
 #button functions
 def add_button_func():
     #1 selecting files
-    global file_list
-    file_list = fd.askopenfilenames(
+    global file_path_list
+    file_path_list = fd.askopenfilenames(
         initialdir='E:/0_Wuer/5 Projekty/Python/P2_Renamer/TEST FILES'
         )
     
     global file_names_list
     def finding_names_from_list(file_list):
+        #return list of two list, on which file_name and 
+        #file_format are in the same one list [[file,format][...]]
         global format_index
         new_list = []
+        small_list = []
         for file in file_list:
             name_start_index = (file.rfind('/'))+1
-            format_index = (file.rfind('.'))
             name = file[name_start_index:format_index]
-            new_list.append(name)
+            format_index = (file.rfind('.'))
+            format = file [format_index:]
+
+            i = file_list.index(file)
+            small_list.append(name)
+            small_list.append(format)
+            for 
+                new_list.append(small_list)
         return new_list
     
     file_names_list=finding_names_from_list(file_list)
