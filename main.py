@@ -2,6 +2,7 @@
 #22.07.2023
 import customtkinter as ctk
 from tkinter import filedialog as fd
+
 from tkinter import ttk
 import sys
 # import pandas as pd
@@ -39,6 +40,7 @@ def add_button_func():
     
     file_names_list=finding_names_from_list(file_list)
 
+
     #2 couting files
     selected_files_numb = len(file_list)
     #3 displaying number of files
@@ -55,6 +57,7 @@ def  refresh():
         table1.insert(parent ='', index = 'end', values = data)
 
 #GENERAL
+
 ctk.set_appearance_mode("system")
 ctk.set_default_color_theme("blue")
 
@@ -82,7 +85,6 @@ file_add_button = ctk.CTkButton(master = frame_1,
                                 )
 file_add_button.pack()
 
-
 #testing new button with methods in another file
 #file_add_button2 = ctk.CTkButton(master = frame_1,
 #                                text='Add files2',
@@ -91,6 +93,7 @@ file_add_button.pack()
 #file_add_button2.pack()
 
 #Label - button updated label -live Counter
+
 counter_label = ctk.CTkLabel(
     master = frame_1,
     text = 'Files not selected'
@@ -119,6 +122,7 @@ table1.heading('date', text = 'Date')
 """
 table1.pack()
 
+
 #FRAME 2 - Adding rules and rules list (preview??)
 frame_2 = ctk.CTkFrame (window,
                         width=200,
@@ -134,7 +138,5 @@ rule_add_button.pack()
 
 #frame 4 - Rename execute button
 #frame 5 - excel import export buttons
-
-#dataframe_functions.wuer_func()
 #RUN
 window.mainloop()
