@@ -1,4 +1,3 @@
-
 list = ['xxx/A.B','y/C.D','z/E.F','44/G.H']
 nb_files = len(list)
 fetched_list = []
@@ -15,18 +14,16 @@ def split_list (list, new_list):
         name = item[name_start_index:format_index]
         format = item[format_start_index:]
 
-        inner_list.append(name)
-        inner_list.append(format)
-        fetched_list.append(item)
-        print (inner_list)
+        pair = [name,format]
+        fetched_list.append(pair )
+    print (fetched_list)
 
 split_list(list,fetched_list)
 
-alphabet = "abcdefghijklmnopqrstuvwxyz"
-nested_list = []
 
-for i in range(0, len(alphabet), 2):
-    pair = [alphabet[i], alphabet[i+1]]
-    nested_list.append(pair)
-
-print(nested_list)
+#alphabet = "abcdefghijklmnopqrstuvwxyz"
+#nested_list = []
+#for i in range(0, len(alphabet), 2):
+#    pair = [alphabet[i], alphabet[i+1]]
+#    nested_list.append(pair)
+#print(nested_list)

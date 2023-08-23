@@ -13,45 +13,40 @@ file_names_list = []
 #button functions
 def add_button_func():
     #1 selecting files
-    global file_path_list
-    file_path_list = fd.askopenfilenames(
+    global file_paths_list
+    file_paths_list = fd.askopenfilenames(
         initialdir='E:/0_Wuer/5 Projekty/Python/P2_Renamer/TEST FILES'
         )
     
-    global file_names_list
-    def finding_names_from_list(file_list):
-        #return list of two list, on which file_name and 
-        #file_format are in the same one list [[file,format][...]]
-        global format_index
-        new_list = []
-        small_list = []
-        for file in file_list:
+    global name_format_list
+    def nested_files_list(file_path_list):
+        #returns nested list of [[file1,fomart1][...]]
+        #global format_index
+        fetched_list = []
+        for file in file_path_list:
             name_start_index = (file.rfind('/'))+1
-            name = file[name_start_index:format_index]
-            format_index = (file.rfind('.'))
-            format = file [format_index:]
-
-            i = file_list.index(file)
-            small_list.append(name)
-            small_list.append(format)
-            for 
-                new_list.append(small_list)
-        return new_list
-    
-    file_names_list=finding_names_from_list(file_list)
-
-
+            separator_index = (file.rfind('.'))
+            format_start_index = separator_index +1
+            name = file[name_start_index:separator_index]
+            format = file [format_start_index:]
+            pair = [name, format]
+            fetched_list.append(pair)
+        return fetched_list
+                       
+    name_format_list=nested_files_list(file_paths_list)
+    return name_format_list
     #2 couting files
     selected_files_numb = len(file_list)
     #3 displaying number of files
     counter_label.configure(text = f'({selected_files_numb}) files are selected')
 
 def  refresh():
-    print (f'refreshing - file names list is: {file_names_list}')
-    for file in (file_names_list):
-        number=(file_names_list.index(file))+1
-        file_name = file
-        format = file[format_index:]
+    # test = print (f'refreshing - curent file path are: {file_paths_list}')
+    for file in (file_paths_list):
+        number=(file_paths_list.index(file))+1
+        file_index = file_paths_list.index(file)
+        file_name = name_format_list[file_index][0]
+        format = name_format_list[file_index][1]
         date = '10.10.2023'
         data = [number, file_name, format, date]
         table1.insert(parent ='', index = 'end', values = data)
@@ -111,15 +106,6 @@ table1.heading('number', text = 'Number')
 table1.heading('file_name', text = 'File name')
 table1.heading('format', text = 'Format')
 table1.heading('date', text = 'Date')
-
-"""for i in range(10):
-    number=i+1
-    file_name = 'nazwa pliku'
-    format = '.pdf'
-    date = '10.10.2023'
-    data = [number, file_name, format, date]
-    table1.insert(parent ='', index = 'end', values = data)
-"""
 table1.pack()
 
 
