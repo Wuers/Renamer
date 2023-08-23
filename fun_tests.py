@@ -1,0 +1,32 @@
+
+list = ['xxx/A.B','y/C.D','z/E.F','44/G.H']
+nb_files = len(list)
+fetched_list = []
+inner_list = []
+
+test_list = [[] for i in range(nb_files)]
+#print (test_list)
+
+def split_list (list, new_list):
+    for item in list:
+        name_start_index = (item.rfind('/'))+1
+        format_index = (item.rfind('.'))
+        format_start_index = format_index +1
+        name = item[name_start_index:format_index]
+        format = item[format_start_index:]
+
+        inner_list.append(name)
+        inner_list.append(format)
+        fetched_list.append(item)
+        print (inner_list)
+
+split_list(list,fetched_list)
+
+alphabet = "abcdefghijklmnopqrstuvwxyz"
+nested_list = []
+
+for i in range(0, len(alphabet), 2):
+    pair = [alphabet[i], alphabet[i+1]]
+    nested_list.append(pair)
+
+print(nested_list)
