@@ -31,6 +31,15 @@ def add_button_func():
             format = file [format_start_index:]
             pair = [name, format]
             fetched_list.append(pair)
+        # adding information to preview table:    
+        for file in fetched_list:
+            number=(fetched_list.index(file))+1
+            file_index = fetched_list.index(file)
+            file_name = fetched_list[file_index][0]
+            format = fetched_list[file_index][1]
+            date = '10.10.2023'
+            data = [number, file_name, format, date]
+            table1.insert(parent ='', index = 'end', values = data)
         return fetched_list
                        
     name_format_list=nested_files_list(file_paths_list)
@@ -39,17 +48,6 @@ def add_button_func():
     selected_files_numb = len(file_list)
     #3 displaying number of files
     counter_label.configure(text = f'({selected_files_numb}) files are selected')
-
-def  refresh():
-    # test = print (f'refreshing - curent file path are: {file_paths_list}')
-    for file in (file_paths_list):
-        number=(file_paths_list.index(file))+1
-        file_index = file_paths_list.index(file)
-        file_name = name_format_list[file_index][0]
-        format = name_format_list[file_index][1]
-        date = '10.10.2023'
-        data = [number, file_name, format, date]
-        table1.insert(parent ='', index = 'end', values = data)
 
 #GENERAL
 
@@ -60,7 +58,7 @@ ctk.set_default_color_theme("blue")
 #window
 window =ctk.CTk()
 window.title('Renamer by Wuers')
-window.geometry('600x400')
+window.geometry('600x600')
 
 #label - selection
 title_label = ctk.CTkLabel(window,height=20,width=100,
@@ -95,12 +93,7 @@ counter_label = ctk.CTkLabel(
 )
 counter_label.pack()
 
-#refresh table button 
-refresh_button = ctk.CTkButton(master=frame_1, 
-                               text ='refresh_button',
-                               command = refresh)
-refresh_button.pack()
-#preview of selected files table
+#Empty review table:
 table1 = ttk.Treeview(window, columns =('number', 'file_name','format', 'date' ),show = 'headings')
 table1.heading('number', text = 'Number')
 table1.heading('file_name', text = 'File name')
@@ -112,13 +105,22 @@ table1.pack()
 #FRAME 2 - Adding rules and rules list (preview??)
 frame_2 = ctk.CTkFrame (window,
                         width=200,
-                        height = 50)
+                        height =550)
 frame_2.pack(pady=10)
 #add_button for rules
 rule_add_button = ctk.CTkButton(master = frame_2,
                                 text='Add rules'
                                 )
 rule_add_button.pack()
+
+#options - delete, add numbering find and change
+#1)delete
+optionmenu_1=ctk.CTkOptionMenu(master=window,
+                                values=['Delete', 'Add','Add numbering','Find and change'],
+                                command= 
+                                )
+optionmenu_1.set('Choose rule"')
+optionmenu_1.pack()
 
 #frame 3 - Preview of changes - table with files and aplied rules in e.g red 
 
