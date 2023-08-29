@@ -117,7 +117,7 @@ rule_add_button.pack()
 #1)delete
 optionmenu_1=ctk.CTkOptionMenu(master=window,
                                 values=['Delete', 'Add','Add numbering','Find and change'],
-                                command= 
+                                #command= 
                                 )
 optionmenu_1.set('Choose rule"')
 optionmenu_1.pack()
