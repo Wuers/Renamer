@@ -42,12 +42,24 @@ def add_button_func():
             table1.insert(parent ='', index = 'end', values = data)
         return fetched_list
                        
-    name_format_list=nested_files_list(file_paths_list)
-    return name_format_list
+    
     #2 couting files
-    selected_files_numb = len(file_list)
+    selected_files_numb = len(file_paths_list)
     #3 displaying number of files
     counter_label.configure(text = f'({selected_files_numb}) files are selected')
+    name_format_list=nested_files_list(file_paths_list)
+
+    return name_format_list
+
+def preview_func():
+    global letters_numb
+    letters_numb= letters_number_input.get()
+    #print (f'Returned value is: {letters_numb}')
+    #updating label:
+    
+    choosen_function_name = optionmenu_1.get()
+    letters_label.configure(text =f'{letters_numb} would be {choosen_function_name}')
+    return (letters_numb)
 
 #GENERAL
 
@@ -104,23 +116,32 @@ table1.pack()
 
 #FRAME 2 - Adding rules and rules list (preview??)
 frame_2 = ctk.CTkFrame (window,
-                        width=200,
+                        width=500,
                         height =550)
 frame_2.pack(pady=10)
 #add_button for rules
-rule_add_button = ctk.CTkButton(master = frame_2,
-                                text='Add rules'
-                                )
-rule_add_button.pack()
+#rule_add_button = ctk.CTkButton(master = frame_2,
+#                                text='Add rules')
+#rule_add_button.pack()
 
 #options - delete, add numbering find and change
 #1)delete
-optionmenu_1=ctk.CTkOptionMenu(master=window,
+optionmenu_1=ctk.CTkOptionMenu(master=frame_2,
                                 values=['Delete', 'Add','Add numbering','Find and change'],
                                 #command= 
                                 )
-optionmenu_1.set('Choose rule"')
+optionmenu_1.set('Choose option')
 optionmenu_1.pack()
+
+letters_label= ctk.CTkLabel(frame_2, text = '')
+letters_label.pack()
+
+letters_number_input = ctk.CTkEntry(master = frame_2)
+letters_number_input.pack()
+
+preview_button = ctk.CTkButton(master = frame_2, text = 'Preview', command = preview_func)
+preview_button.pack()
+
 
 #frame 3 - Preview of changes - table with files and aplied rules in e.g red 
 
