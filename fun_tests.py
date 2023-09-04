@@ -27,3 +27,12 @@ split_list(list,fetched_list)
 #    pair = [alphabet[i], alphabet[i+1]]
 #    nested_list.append(pair)
 #print(nested_list)
+
+#lambda function test
+varA= 'A',
+varB = 'B',
+var5 = 5,
+var8 = 8,
+func = lambda x,y: x + y
+print ("lambda function test:")
+print (func (var5,var8))

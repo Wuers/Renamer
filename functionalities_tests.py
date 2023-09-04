@@ -40,7 +40,7 @@ radio1.pack()
 radio2 = ttk.Radiobutton(window, text = 'Radiobutton 2',
                         value = 2,
                         variable= radio_var,
-                        command = lambda: print(radio_var.get()\))
+                        command = lambda: print(radio_var.get()))
 radio2.pack()
 
 #example:
@@ -52,7 +52,27 @@ radio2.pack()
 #check button:
     #ticking the checkbutton print the value of the radio button value
     #use tkinter var for Booleans!
+def radio_func():
+    print (check3_var.get())
+    check3_var.set(0)
+#data
+radio_exercise_var = tk.StringVar()
+check3_var = tk.BooleanVar()
+radioA = ttk.Radiobutton(window, text = 'Radiobutton A',
+                         value = 'A',
+                         variable = radio_exercise_var,
+                         command = radio_func)
 
-    
+radioA.pack()
+radioB = ttk.Radiobutton(window, text = 'Radiobutton B',
+                         value = 'B',
+                         variable = radio_exercise_var,
+                         command = radio_func)
+radioB.pack()
+
+check3 = ttk.Checkbutton(window, text = 'Checkbox 3',
+                         variable = check3_var,
+                         command = lambda: print (radio_exercise_var.get()))
+check3.pack()
 #run
 window.mainloop()
