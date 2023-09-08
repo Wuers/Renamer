@@ -136,9 +136,7 @@ optionmenu_1.pack()
 letters_label= ctk.CTkLabel(frame_2, text = '')
 letters_label.pack()
 
-letter_var = ctk.IntVar()
 letters_number_input = ctk.CTkEntry(master = frame_2)
-
 letters_number_input.pack()
 
 preview_button = ctk.CTkButton(master = frame_2, text = 'Preview', command = preview_func)
