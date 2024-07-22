@@ -23,6 +23,18 @@ def add_button_func2(new_label_name):
     new_label_name.configure(text = f'({selected_files_numb2}) files are selected')
     #return (selected_files_numb2)
 
+#function to change rendered label after choosing optionmenu_1:
+def option_callback(choice):
+    if choice =="Delete":
+        title_label.configure(text="Wybrano opcję Delete")
+    elif choice =="Add":
+        info_label.configure(text="Wybrano opcję Add")
+    elif choice =="Add numbering":
+        info_label.configure(text="Wybrano opcję Add numbering")
+    elif choice =="Find and change":
+        info_label.configure(text="Wybrano opcję Find and change")
+
+
 """#functions should be use to operate on file nemes with iterations
 not using global variables:
 1)CTK function should return data: list of file names - 

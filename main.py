@@ -5,8 +5,10 @@ import sys
 import os
 import datetime
 
-# import pandas as pd
-import dataframe_functions
+# import pandas as pd?
+
+#import my functions from file:
+#import dataframe_functions as dff
 
 file_names_list = []
 
@@ -20,7 +22,7 @@ def add_button_func():
     
     global name_format_list
     def nested_files_list(file_path_list):
-        #returns nested list of [[file1,format1][...]]
+        #returns nested list of [[file1,format1,date1](...)]
         #global format_index
         fetched_list = []
         for file in file_path_list:
@@ -64,6 +66,25 @@ def preview_func():
     letters_label.configure(text =f'{letters_numb} would be {choosen_function_name}')
     return (letters_numb)
 
+
+def option_callback(choice):
+    if choice =="Delete":
+        title_label2.configure(text="Wybrano opcję Delete")
+
+        radio_frame = ctk.CTkFrame(master=frame_2)
+        radio_frame.pack(pady=10)
+        radio_var = ctk.StringVar(value="")
+        radio_1 = ctk.CTkRadioButton(master=radio_frame, text="At beginning", variable=radio_var, value="beginning")
+        radio_1.pack(pady=5)
+        radio_1 = ctk.CTkRadioButton(master=radio_frame, text="From end", variable=radio_var, value="beginning")
+        radio_1.pack(pady=5)
+
+    elif choice =="Add":
+        title_label2.configure(text="Wybrano opcję Add")
+    elif choice =="Add numbering":
+        title_label2.configure(text="Wybrano opcję Add numbering")
+    elif choice =="Find and change":
+        title_label2.configure(text="Wybrano opcję Find and change")
 #GENERAL
 
 ctk.set_appearance_mode("system")
@@ -117,32 +138,34 @@ table1.heading('date', text = 'Creation date')
 table1.pack()
 
 
-#FRAME 2 - Adding rules and rules list (preview??)
-frame_2 = ctk.CTkFrame (window,
-                        width=500,
-                        height =550)
-frame_2.pack(pady=10)
-#add_button for rules
-#rule_add_button = ctk.CTkButton(master = frame_2,
-#                                text='Add rules')
-#rule_add_button.pack()
+#FRAME 2 - Choosing operation setting
+frame_2 = ctk.CTkFrame(master=window)
+frame_2.pack(pady=20, padx=20, fill="both", expand=True)
+
+#FRAME 3 - confirmation
+frame_3 = ctk.CTkFrame(master=window)
+frame_3.pack(pady=20, padx=20, fill="both", expand=True)
 
 #options - delete, add numbering find and change
 #1)delete
 optionmenu_1=ctk.CTkOptionMenu(master=frame_2,
                                 values=['Delete', 'Add','Add numbering','Find and change'],
-                                #command= 
-                                )
+                                command=option_callback)
 optionmenu_1.set('Choose option')
 optionmenu_1.pack()
 
-letters_label= ctk.CTkLabel(frame_2, text = '')
+title_label2 = ctk.CTkLabel(master=frame_2,height=20,width=100,
+                           padx=10, pady=20,
+                           text="Select Files and Rules:")
+#title_label2.pack()
+
+letters_label= ctk.CTkLabel(frame_3, text = '')
 letters_label.pack()
 
-letters_number_input = ctk.CTkEntry(master = frame_2)
+letters_number_input = ctk.CTkEntry(master = frame_3)
 letters_number_input.pack()
 
-preview_button = ctk.CTkButton(master = frame_2, text = 'Preview', command = preview_func)
+preview_button = ctk.CTkButton(master = frame_3, text = 'Preview', command = preview_func)
 preview_button.pack()
 
 
