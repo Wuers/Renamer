@@ -1,10 +1,10 @@
-
-#22.07.2023
 import customtkinter as ctk
 from tkinter import filedialog as fd
-
 from tkinter import ttk
 import sys
+import os
+import datetime
+
 # import pandas as pd
 import dataframe_functions
 
@@ -20,7 +20,7 @@ def add_button_func():
     
     global name_format_list
     def nested_files_list(file_path_list):
-        #returns nested list of [[file1,fomart1][...]]
+        #returns nested list of [[file1,format1][...]]
         #global format_index
         fetched_list = []
         for file in file_path_list:
@@ -29,7 +29,10 @@ def add_button_func():
             format_start_index = separator_index +1
             name = file[name_start_index:separator_index]
             format = file [format_start_index:]
-            pair = [name, format]
+            creation_time = os.path.getctime(file)
+            creation_date = datetime.datetime.fromtimestamp(creation_time)
+            formated_creation_date = creation_date.strftime("%Y-%m-%d %H:%M")
+            pair = [name, format, formated_creation_date]
             fetched_list.append(pair)
         # adding information to preview table:    
         for file in fetched_list:
@@ -37,7 +40,7 @@ def add_button_func():
             file_index = fetched_list.index(file)
             file_name = fetched_list[file_index][0]
             format = fetched_list[file_index][1]
-            date = '10.10.2023'
+            date = fetched_list[file_index][2]
             data = [number, file_name, format, date]
             table1.insert(parent ='', index = 'end', values = data)
         return fetched_list
@@ -110,7 +113,7 @@ table1 = ttk.Treeview(window, columns =('number', 'file_name','format', 'date' )
 table1.heading('number', text = 'Number')
 table1.heading('file_name', text = 'File name')
 table1.heading('format', text = 'Format')
-table1.heading('date', text = 'Date')
+table1.heading('date', text = 'Creation date')
 table1.pack()
 
 
