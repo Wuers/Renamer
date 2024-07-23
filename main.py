@@ -108,7 +108,7 @@ def option_callback(choice):
             placeholder_text="insert number of character to be deleted",
             width=250,
             validate="key",
-            validatecommand=(validate_cmd, '%V')
+            validatecommand=(validate_cmd, '%P')
             )
         delete_entry.grid(row=1, column =1, pady=10)
 
@@ -126,6 +126,19 @@ def option_callback(choice):
         title_label2.configure(text="Wybrano opcję Add numbering")
     elif choice =="Find and change":
         title_label2.configure(text="Wybrano opcję Find and change")
+
+def delete_from_filenames(num_chars, position, list):
+    modified_list = []
+    for item in list:
+        name, format, date = item
+        if position == "beggining":
+            new_name = name[num_chars:]
+        elif position == "end":
+            new_name = name[:-num_chars] if len(name) > num_chars else ""
+        else:
+            new_name = name
+        modified_list.append([new_name,format, date])
+    return modified_list
 #GENERAL
 
 ctk.set_appearance_mode("system")
