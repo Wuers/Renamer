@@ -66,18 +66,59 @@ def preview_func():
     letters_label.configure(text =f'{letters_numb} would be {choosen_function_name}')
     return (letters_numb)
 
+def validate_insert_if_int(V):
+    if V == "" or V.isdigit():
+        return True
+    else:
+        return False
+
+def get_delete_value():
+    global delete_entry
+    value = delete_entry.get()
+    if value.isdigit():
+        print (f"value is ok")
+        return int(value)
+    else:
+        print ("Please insert only value, not string etc")
+    return None
 
 def option_callback(choice):
     if choice =="Delete":
         title_label2.configure(text="Wybrano opcję Delete")
 
-        radio_frame = ctk.CTkFrame(master=frame_2)
+        radio_frame = ctk.CTkFrame(master=frame_2, width=400)
         radio_frame.pack(pady=10)
         radio_var = ctk.StringVar(value="")
-        radio_1 = ctk.CTkRadioButton(master=radio_frame, text="At beginning", variable=radio_var, value="beginning")
-        radio_1.pack(pady=5)
-        radio_1 = ctk.CTkRadioButton(master=radio_frame, text="From end", variable=radio_var, value="beginning")
-        radio_1.pack(pady=5)
+
+        radio_buttons_frame = ctk.CTkFrame(master=radio_frame)
+        radio_buttons_frame.pack()
+
+        radio_1 = ctk.CTkRadioButton(master=radio_buttons_frame, text="At beginning", variable=radio_var, value="beginning")
+        #radio_1.pack(side="left", padx=(0, 5))
+        radio_1.grid(row=0, column=0, pady=10)
+        radio_2 = ctk.CTkRadioButton(master=radio_buttons_frame, text="From end", variable=radio_var, value="end")
+        #radio_1.pack(side="left", padx=(5, 0))
+        radio_2.grid(row=0, column=2, pady=10)
+        #entry to insert number of characters thats going to be deleted:
+        validate_cmd=radio_buttons_frame.register(validate_insert_if_int)
+
+        global delete_entry
+        delete_entry = ctk.CTkEntry(
+            master=radio_buttons_frame,
+            placeholder_text="insert number of character to be deleted",
+            width=250,
+            validate="key",
+            validatecommand=(validate_cmd, '%V')
+            )
+        delete_entry.grid(row=1, column =1, pady=10)
+
+        #button to send value:
+        delete_process_button = ctk.CTkButton(
+            master=radio_buttons_frame,
+            text="Confirm",
+            command=get_delete_value
+        )
+        delete_process_button.grid(row=2, column=2, pady=10)
 
     elif choice =="Add":
         title_label2.configure(text="Wybrano opcję Add")
@@ -154,24 +195,26 @@ optionmenu_1=ctk.CTkOptionMenu(master=frame_2,
 optionmenu_1.set('Choose option')
 optionmenu_1.pack()
 
+
+
 title_label2 = ctk.CTkLabel(master=frame_2,height=20,width=100,
                            padx=10, pady=20,
                            text="Select Files and Rules:")
 #title_label2.pack()
 
-letters_label= ctk.CTkLabel(frame_3, text = '')
-letters_label.pack()
+#letters_label= ctk.CTkLabel(frame_3, text = '')
+#letters_label.pack()
 
-letters_number_input = ctk.CTkEntry(master = frame_3)
-letters_number_input.pack()
+#letters_number_input = ctk.CTkEntry(master = frame_3)
+#letters_number_input.pack()
 
-preview_button = ctk.CTkButton(master = frame_3, text = 'Preview', command = preview_func)
-preview_button.pack()
+#preview_button = ctk.CTkButton(master = frame_3, text = 'Preview', command = preview_func)
+#preview_button.pack()
 
 
 #frame 3 - Preview of changes - table with files and aplied rules in e.g red 
 
 #frame 4 - Rename execute button
-#frame 5 - excel import export buttons
+
 #RUN
 window.mainloop()
