@@ -5,16 +5,11 @@ import sys
 import os
 import datetime
 
-# import pandas as pd?
-
-#import my functions from file:
-#import dataframe_functions as dff
 
 file_names_list = []
-
 #button functions
 def add_button_func():
-    #1 selecting files
+    #1 selecting files, returns list of files directories
     global file_paths_list
     file_paths_list = fd.askopenfilenames(
         initialdir='E:/0_Wuer/5 Projekty/Python/P2_Renamer/TEST FILES'
@@ -24,6 +19,7 @@ def add_button_func():
     def nested_files_list(file_path_list):
         #returns nested list of [[file1,format1,date1](...)]
         #global format_index
+        global fetched_list
         fetched_list = []
         for file in file_path_list:
             name_start_index = (file.rfind('/'))+1
@@ -67,33 +63,44 @@ def preview_func():
     return (letters_numb)
 
 def validate_insert_if_int(V):
+    #function to validate if inserted character is int
     if V == "" or V.isdigit():
         return True
     else:
         return False
 
 def get_delete_value():
+    #function that return int value from delete_entry
     global delete_entry
     value = delete_entry.get()
     if value.isdigit():
-        print (f"value is ok")
         return int(value)
     else:
         print ("Please insert only value, not string etc")
-    return None
+        return None
+    
+def delete_on_preview():
+    num_chars = get_delete_value()
+    if num_chars is not None:
+        position = radio_var.get()
+        global fetched_list
+        fetched_list = delete_from_filenames(num_chars, position, fetched_list)
+        print ("file names changed:", fetched_list)
+
 
 def option_callback(choice):
     if choice =="Delete":
-        title_label2.configure(text="Wybrano opcję Delete")
+        title_label2.configure(text="Can delete given number of chars from begginng or from end of choosen file names")
 
         radio_frame = ctk.CTkFrame(master=frame_2, width=400)
         radio_frame.pack(pady=10)
+        global radio_var
         radio_var = ctk.StringVar(value="")
 
         radio_buttons_frame = ctk.CTkFrame(master=radio_frame)
         radio_buttons_frame.pack()
 
-        radio_1 = ctk.CTkRadioButton(master=radio_buttons_frame, text="At beginning", variable=radio_var, value="beginning")
+        radio_1 = ctk.CTkRadioButton(master=radio_buttons_frame, text="At the beginning", variable=radio_var, value="beginning")
         #radio_1.pack(side="left", padx=(0, 5))
         radio_1.grid(row=0, column=0, pady=10)
         radio_2 = ctk.CTkRadioButton(master=radio_buttons_frame, text="From end", variable=radio_var, value="end")
@@ -102,6 +109,7 @@ def option_callback(choice):
         #entry to insert number of characters thats going to be deleted:
         validate_cmd=radio_buttons_frame.register(validate_insert_if_int)
 
+        #entry to insert number:
         global delete_entry
         delete_entry = ctk.CTkEntry(
             master=radio_buttons_frame,
@@ -116,22 +124,22 @@ def option_callback(choice):
         delete_process_button = ctk.CTkButton(
             master=radio_buttons_frame,
             text="Confirm",
-            command=get_delete_value
+            command=delete_on_preview
         )
         delete_process_button.grid(row=2, column=2, pady=10)
 
     elif choice =="Add":
-        title_label2.configure(text="Wybrano opcję Add")
+        title_label2.configure(text="Add")
     elif choice =="Add numbering":
-        title_label2.configure(text="Wybrano opcję Add numbering")
+        title_label2.configure(text="Add numbering")
     elif choice =="Find and change":
-        title_label2.configure(text="Wybrano opcję Find and change")
+        title_label2.configure(text="Find and change")
 
 def delete_from_filenames(num_chars, position, list):
     modified_list = []
     for item in list:
         name, format, date = item
-        if position == "beggining":
+        if position == "beginning":
             new_name = name[num_chars:]
         elif position == "end":
             new_name = name[:-num_chars] if len(name) > num_chars else ""
@@ -139,17 +147,16 @@ def delete_from_filenames(num_chars, position, list):
             new_name = name
         modified_list.append([new_name,format, date])
     return modified_list
-#GENERAL
 
+
+#GENERAL
 ctk.set_appearance_mode("system")
 ctk.set_default_color_theme("blue")
-
 #LAYOUT BELLOW
 #window
 window =ctk.CTk()
 window.title('Renamer by Wuers')
 window.geometry('600x600')
-
 #label - selection
 title_label = ctk.CTkLabel(window,height=20,width=100,
                            padx=10, pady=20,
@@ -161,6 +168,7 @@ frame_1 = ctk.CTkFrame (window,
                         width=200,
                         height = 50)
 frame_1.pack(pady=10)
+
 #button - add_button for files
 file_add_button = ctk.CTkButton(master = frame_1,
                                 text='Add files',
@@ -168,15 +176,7 @@ file_add_button = ctk.CTkButton(master = frame_1,
                                 )
 file_add_button.pack()
 
-#testing new button with methods in another file
-#file_add_button2 = ctk.CTkButton(master = frame_1,
-#                                text='Add files2',
-#                                command=dataframe_functions.add_button_func2
-#                                )
-#file_add_button2.pack()
-
 #Label - button updated label -live Counter
-
 counter_label = ctk.CTkLabel(
     master = frame_1,
     text = 'Files not selected'
@@ -208,12 +208,13 @@ optionmenu_1=ctk.CTkOptionMenu(master=frame_2,
 optionmenu_1.set('Choose option')
 optionmenu_1.pack()
 
-
-
 title_label2 = ctk.CTkLabel(master=frame_2,height=20,width=100,
                            padx=10, pady=20,
                            text="Select Files and Rules:")
-#title_label2.pack()
+title_label2.pack()
+
+#preview table:
+prev_table = ctk.CTkTabview
 
 #letters_label= ctk.CTkLabel(frame_3, text = '')
 #letters_label.pack()
