@@ -83,18 +83,27 @@ def get_delete_value():
 def delete_preview(): 
     num_chars = get_delete_value()
     if num_chars is not None:
+        global position
         position = radio_var.get()
         global fetched_list
-        new_fetched_list = delete_from_filenames(num_chars, position, fetched_list)
-        print ("file names changed:", new_fetched_list)
+        new_fetched_list, old_and_new_paths = delete_from_filenames(num_chars, position, fetched_list)
+        for old, new in old_and_new_paths:
+            print(f"OLD: {old}")
+            print(f"NEW: {new}")
+            print("-----")
         update_table(new_fetched_list)
 
 def save_delete_preview():
-    for old_file in file_paths_list:
-    ##to jest zle, jak dostac sciezke i nazwe
+    # call delete_from_filenames to get old and new file paths
+    modified_list, old_and_new_path = delete_from_filenames(num_chars, position, file_paths_list)
+    for old_path, new_path in old_and_new_path:
+        try:
+            os.rename(old_path, new_path)
+        except OSError as e:
+            print(f"Error renaming {old_path} to {new_path}: {e}")
 
-        new_file = os.path.join("directory", name, ".", format)
-        os.rename(old_file,new_file)
+    # update table with new names
+    update_table(modified_list)
     
 
 
