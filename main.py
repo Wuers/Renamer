@@ -17,30 +17,25 @@ def f_add_button():
     
     global name_format_list
     def f_nested_files_list(file_path_list):
-        #returns nested list of [[file1,format1,date1](...)]
+        #returns nested list of [[name1,format1,date1,file1_path](...)]
         #global format_index
         global fetched_list
         fetched_list = []
         for file in file_path_list:
-            #name_start_index = (file.rfind('/'))+1
-            #separator_index = (file.rfind('.'))
-            #format_start_index = separator_index +1
-            #name = file[name_start_index:separator_index]
-            #format = file [format_start_index:]
             name = os.path.basename(file)
             name_without_exntension = os.path.splitext(name)[0]
-            format = os.path.splitext(name)[1][1:0]
+            format = os.path.splitext(name)[1][1:]
             creation_time = os.path.getctime(file)
             creation_date = datetime.datetime.fromtimestamp(creation_time)
             formated_creation_date = creation_date.strftime("%Y-%m-%d %H:%M")
-            #pair is a list
-            pair = [name_without_exntension, format, formated_creation_date, file]
-            fetched_list.append(pair)
+            #item is a tuple - file information.
+            item = [name_without_exntension, format, formated_creation_date, file]
+            fetched_list.append(item)
         # adding information to preview table:    
       
         for index,file in enumerate(fetched_list, start=1):
             file_name, format, date, full_path = file
-            data = [index,file_name, format, date]
+            data = [index, file_name, format, date]
             table1.insert(parent='', index='end', values=data)
         return fetched_list
                        
@@ -53,15 +48,6 @@ def f_add_button():
 
     return name_format_list
 
-def f_preview():
-    global letters_numb
-    letters_numb= letters_number_input.get()
-    #print (f'Returned value is: {letters_numb}')
-    #updating label:
-    
-    choosen_function_name = optionmenu_1.get()
-    letters_label.configure(text =f'{letters_numb} would be {choosen_function_name}')
-    return (letters_numb)
 
 def validate_insert_if_int(V):
     #function to validate if inserted character is int
@@ -92,10 +78,16 @@ def delete_preview():
             print(f"NEW: {new}")
             print("-----")
         update_table(new_fetched_list)
+    else:
+        print ("num_chars is bugged. Current value:", num_chars)
 
 def save_delete_preview():
     # call delete_from_filenames to get old and new file paths
-    modified_list, old_and_new_path = delete_from_filenames(num_chars, position, file_paths_list)
+    num_chars = get_delete_value()
+    position = radio_var.get()
+    global fetched_list
+    
+    modified_list, old_and_new_path = delete_from_filenames(num_chars, position, fetched_list)
     for old_path, new_path in old_and_new_path:
         try:
             os.rename(old_path, new_path)
@@ -163,11 +155,16 @@ def option_callback(choice):
         title_label2.configure(text="Find and change")
 
 def delete_from_filenames(num_chars, position, list):
-    #only modyfies files list
+    #function that returns two list: new, modified and list with old and new paths
     modified_list = []
     old_and_new_path = []
     for item in list:
-        name, format, date, full_path = item
+        try:
+            name, format, date, full_path = item
+        except ValueError as e:
+            print ("error is: ", e)
+            print (f"error when unpacking tuple 'item'. problematic element: {item}")
+            continue
         if position == "beginning":
             new_name = name[num_chars:]
         elif position == "end":
@@ -176,21 +173,22 @@ def delete_from_filenames(num_chars, position, list):
             new_name = name
 
         old_path = full_path
-        new_path = os.path.join(os.path.dirname(full_path), f"{new_name}.{format}")
+        #new_path = os.path.join(os.path.dirname(full_path), f"{new_name}.{format}")
+        new_path = os.path.normpath(os.path.join(os.path.dirname(full_path), f"{new_name}.{format}"))
 
-        modified_list.append([new_name,format, date, new_path])
+        modified_list.append([new_name, format, date, new_path])
         old_and_new_path.append((old_path, new_path))
 
     return modified_list, old_and_new_path
 
 def update_table(new_list):
-#func to update table
+#function to update table
     #delete current preview
     for item in table1.get_children():
         table1.delete(item)
     #add new preview
     for index, item in enumerate(new_list, start=1):
-        name, format, date = item
+        name, format, date, full_path = item
         table1.insert('', 'end', values=(index, name, format, date))
 
 
@@ -230,8 +228,9 @@ counter_label = ctk.CTkLabel(
 counter_label.pack()
 
 #Empty review table:
-table1 = ttk.Treeview(window, columns =('number', 'old_file_name','new_file_name','format', 'date' ),show = 'headings')
-table1.heading('number', text = 'Number')
+table1 = ttk.Treeview(window, columns =('number', 'old_file_name','new_file_name','format', 'date'), 
+                      show = 'headings')
+table1.heading('number', text = 'Number') 
 table1.heading('old_file_name', text = 'File name')
 table1.heading('new_file_name', text ='New file name')
 table1.heading('format', text = 'Format')
