@@ -8,7 +8,7 @@ import datetime
 
 file_names_list = []
 #button functions
-def add_button_func():
+def f_add_button():
     #1 selecting files, returns list of files directories
     global file_paths_list
     file_paths_list = fd.askopenfilenames(
@@ -16,31 +16,27 @@ def add_button_func():
         )
     
     global name_format_list
-    def nested_files_list(file_path_list):
-        #returns nested list of [[file1,format1,date1](...)]
+    def f_nested_files_list(file_path_list):
+        #returns nested list of [[name1,format1,date1,file1_path](...)]
         #global format_index
         global fetched_list
         fetched_list = []
         for file in file_path_list:
-            name_start_index = (file.rfind('/'))+1
-            separator_index = (file.rfind('.'))
-            format_start_index = separator_index +1
-            name = file[name_start_index:separator_index]
-            format = file [format_start_index:]
+            name = os.path.basename(file)
+            name_without_exntension = os.path.splitext(name)[0]
+            format = os.path.splitext(name)[1][1:]
             creation_time = os.path.getctime(file)
             creation_date = datetime.datetime.fromtimestamp(creation_time)
             formated_creation_date = creation_date.strftime("%Y-%m-%d %H:%M")
-            pair = [name, format, formated_creation_date]
-            fetched_list.append(pair)
+            #item is a tuple - file information.
+            item = [name_without_exntension, format, formated_creation_date, file]
+            fetched_list.append(item)
         # adding information to preview table:    
-        for file in fetched_list:
-            number=(fetched_list.index(file))+1
-            file_index = fetched_list.index(file)
-            file_name = fetched_list[file_index][0]
-            format = fetched_list[file_index][1]
-            date = fetched_list[file_index][2]
-            data = [number, file_name, format, date]
-            table1.insert(parent ='', index = 'end', values = data)
+      
+        for index,file in enumerate(fetched_list, start=1):
+            file_name, format, date, full_path = file
+            data = [index, file_name, format, date]
+            table1.insert(parent='', index='end', values=data)
         return fetched_list
                        
     
@@ -48,19 +44,10 @@ def add_button_func():
     selected_files_numb = len(file_paths_list)
     #3 displaying number of files
     counter_label.configure(text = f'({selected_files_numb}) files are selected')
-    name_format_list=nested_files_list(file_paths_list)
+    name_format_list=f_nested_files_list(file_paths_list)
 
     return name_format_list
 
-def preview_func():
-    global letters_numb
-    letters_numb= letters_number_input.get()
-    #print (f'Returned value is: {letters_numb}')
-    #updating label:
-    
-    choosen_function_name = optionmenu_1.get()
-    letters_label.configure(text =f'{letters_numb} would be {choosen_function_name}')
-    return (letters_numb)
 
 def validate_insert_if_int(V):
     #function to validate if inserted character is int
@@ -79,13 +66,37 @@ def get_delete_value():
         print ("Please insert only value, not string etc")
         return None
     
-def delete_on_preview():
+def delete_preview(): 
     num_chars = get_delete_value()
     if num_chars is not None:
+        global position
         position = radio_var.get()
         global fetched_list
-        fetched_list = delete_from_filenames(num_chars, position, fetched_list)
-        print ("file names changed:", fetched_list)
+        new_fetched_list, old_and_new_paths = delete_from_filenames(num_chars, position, fetched_list)
+        for old, new in old_and_new_paths:
+            print(f"OLD: {old}")
+            print(f"NEW: {new}")
+            print("-----")
+        update_table(new_fetched_list)
+    else:
+        print ("num_chars is bugged. Current value:", num_chars)
+
+def save_delete_preview():
+    # call delete_from_filenames to get old and new file paths
+    num_chars = get_delete_value()
+    position = radio_var.get()
+    global fetched_list
+    
+    modified_list, old_and_new_path = delete_from_filenames(num_chars, position, fetched_list)
+    for old_path, new_path in old_and_new_path:
+        try:
+            os.rename(old_path, new_path)
+        except OSError as e:
+            print(f"Error renaming {old_path} to {new_path}: {e}")
+
+    # update table with new names
+    update_table(modified_list)
+    
 
 
 def option_callback(choice):
@@ -120,13 +131,21 @@ def option_callback(choice):
             )
         delete_entry.grid(row=1, column =1, pady=10)
 
-        #button to send value:
+        #button to send value and preview:
         delete_process_button = ctk.CTkButton(
             master=radio_buttons_frame,
-            text="Confirm",
-            command=delete_on_preview
+            text="Preview",
+            command=delete_preview
         )
         delete_process_button.grid(row=2, column=2, pady=10)
+
+        #button to save changes to files
+        save_process_button = ctk.CTkButton(
+            master=radio_buttons_frame,
+            text="SAVE CHANGES",
+            command=save_delete_preview
+        )
+        save_process_button.grid(row=2, column=3, pady=10)
 
     elif choice =="Add":
         title_label2.configure(text="Add")
@@ -136,17 +155,42 @@ def option_callback(choice):
         title_label2.configure(text="Find and change")
 
 def delete_from_filenames(num_chars, position, list):
+    #function that returns two list: new, modified and list with old and new paths
     modified_list = []
+    old_and_new_path = []
     for item in list:
-        name, format, date = item
+        try:
+            name, format, date, full_path = item
+        except ValueError as e:
+            print ("error is: ", e)
+            print (f"error when unpacking tuple 'item'. problematic element: {item}")
+            continue
         if position == "beginning":
             new_name = name[num_chars:]
         elif position == "end":
             new_name = name[:-num_chars] if len(name) > num_chars else ""
         else:
             new_name = name
-        modified_list.append([new_name,format, date])
-    return modified_list
+
+        old_path = full_path
+        #new_path = os.path.join(os.path.dirname(full_path), f"{new_name}.{format}")
+        new_path = os.path.normpath(os.path.join(os.path.dirname(full_path), f"{new_name}.{format}"))
+
+        modified_list.append([new_name, format, date, new_path])
+        old_and_new_path.append((old_path, new_path))
+
+    return modified_list, old_and_new_path
+
+def update_table(new_list):
+#function to update table
+    #delete current preview
+    for item in table1.get_children():
+        table1.delete(item)
+    #add new preview
+    for index, item in enumerate(new_list, start=1):
+        name, format, date, full_path = item
+        table1.insert('', 'end', values=(index, name, format, date))
+
 
 
 #GENERAL
@@ -156,7 +200,7 @@ ctk.set_default_color_theme("blue")
 #window
 window =ctk.CTk()
 window.title('Renamer by Wuers')
-window.geometry('600x600')
+window.geometry('800x800')
 #label - selection
 title_label = ctk.CTkLabel(window,height=20,width=100,
                            padx=10, pady=20,
@@ -172,7 +216,7 @@ frame_1.pack(pady=10)
 #button - add_button for files
 file_add_button = ctk.CTkButton(master = frame_1,
                                 text='Add files',
-                                command=add_button_func
+                                command=f_add_button
                                 )
 file_add_button.pack()
 
@@ -184,9 +228,11 @@ counter_label = ctk.CTkLabel(
 counter_label.pack()
 
 #Empty review table:
-table1 = ttk.Treeview(window, columns =('number', 'file_name','format', 'date' ),show = 'headings')
-table1.heading('number', text = 'Number')
-table1.heading('file_name', text = 'File name')
+table1 = ttk.Treeview(window, columns =('number', 'old_file_name','new_file_name','format', 'date'), 
+                      show = 'headings')
+table1.heading('number', text = 'Number') 
+table1.heading('old_file_name', text = 'File name')
+table1.heading('new_file_name', text ='New file name')
 table1.heading('format', text = 'Format')
 table1.heading('date', text = 'Creation date')
 table1.pack()
