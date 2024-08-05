@@ -81,6 +81,17 @@ def delete_preview():
         update_table(new_fetched_list)
     else:
         print ("num_chars is bugged. Current value:", num_chars)
+    global confirmation_label
+    if 'confirmation_label' in globals() and confirmation_label.winfo_exists():
+        confirmation_label.destroy()
+
+    '''
+    confirmation_label = ctk.CTkLabel(
+    master = func_frame,
+    text = 'Changes saved!'
+    )
+    confirmation_label.pack()
+    '''
 
 def save_delete_preview():
     # call delete_from_filenames to get old and new file paths
@@ -97,6 +108,14 @@ def save_delete_preview():
 
     # update table with new names
     update_table(modified_list)
+
+    #confirmation label:
+    global confirmation_label
+    confirmation_label = ctk.CTkLabel(
+    master = func_frame,
+    text = 'Changes saved!'
+    )
+    confirmation_label.pack()
     
 def option_callback(choice):
     #function that displays elements needed for the function that has been selected
@@ -263,7 +282,7 @@ table1.heading('date', text = 'Creation date')
 table1.pack()
 
 
-#FRAME 2 - Choosing operation setting
+#FRAME 2 - Choosing function settings
 frame_2 = ctk.CTkFrame(master=window)
 frame_2.pack(pady=20, padx=20, fill="both", expand=True)
 
