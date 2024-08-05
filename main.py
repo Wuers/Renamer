@@ -156,24 +156,26 @@ def option_callback(choice):
         func_d_save_button.grid(row=2, column=3, pady=10)
 
     elif choice =="Add":
-        clear_frame()
+        
 
         title_label2.configure(text="Add")
-        func_frame = ctk.CTkFrame(master=frame_2, width=400)
-        func_frame.pack()
+        #func_frame = ctk.CTkFrame(master=frame_2, width=400)
+        #func_frame.pack()
         #another functionalities
         
     elif choice =="Add numbering":
-        clear_frame()
+        
         title_label2.configure(text="Add numbering")
         func_frame = ctk.CTkFrame(master=frame_2, width=400)
-        func_frame.pack()
         
+
     elif choice =="Find and change":
-        clear_frame()
+        
         title_label2.configure(text="Find and change")
         func_frame = ctk.CTkFrame(master=frame_2, width=400)
-        func_frame.pack()
+    
+    func_frame.pack()
+
 
 def delete_from_filenames(num_chars, position, list):
     #function that returns two list: new, modified and list with old and new paths
@@ -217,8 +219,8 @@ def clear_frame():
     global func_frame
     if 'func_frame' in globals() and func_frame.winfo_exists():
         func_frame.destroy()
-    else:
-        print (f"no frame found")
+    #else:
+    #    print (f"no frame found")
     
 
 #GENERAL
