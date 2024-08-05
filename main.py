@@ -14,7 +14,10 @@ def f_add_button():
     file_paths_list = fd.askopenfilenames(
         initialdir='E:/0_Wuer/5 Projekty/Python/P2_Renamer/TEST FILES'
         )
-    
+    #loop that removes all files from table:
+    for item in table1.get_children():
+        table1.delete(item)
+        
     global name_format_list
     def f_nested_files_list(file_path_list):
         #returns nested list of [[name1,format1,date1,file1_path](...)]
@@ -47,7 +50,6 @@ def f_add_button():
     name_format_list=f_nested_files_list(file_paths_list)
 
     return name_format_list
-
 
 def validate_insert_if_int(V):
     #function to validate if inserted character is int
@@ -97,25 +99,28 @@ def save_delete_preview():
     # update table with new names
     update_table(modified_list)
     
-
-
 def option_callback(choice):
-    if choice =="Delete":
-        title_label2.configure(text="Can delete given number of chars from begginng or from end of choosen file names")
+    #function that displays elements needed for the function that has been selected
+    global func_frame
 
-        radio_frame = ctk.CTkFrame(master=frame_2, width=400)
-        radio_frame.pack(pady=10)
+    clear_frame()
+
+    if choice =="Delete":
+        #label with info:
+        title_label2.configure(text="Can delete given number of chars from begginng or from end of choosen file names")
+        #creating frame for specific function:
+        func_frame = ctk.CTkFrame(master=frame_2, width=400)
+        func_frame.pack(pady=10)
+
         global radio_var
         radio_var = ctk.StringVar(value="")
-
-        radio_buttons_frame = ctk.CTkFrame(master=radio_frame)
+        radio_buttons_frame = ctk.CTkFrame(master=func_frame)
         radio_buttons_frame.pack()
-
         radio_1 = ctk.CTkRadioButton(master=radio_buttons_frame, text="At the beginning", variable=radio_var, value="beginning")
-        #radio_1.pack(side="left", padx=(0, 5))
+        
         radio_1.grid(row=0, column=0, pady=10)
         radio_2 = ctk.CTkRadioButton(master=radio_buttons_frame, text="From end", variable=radio_var, value="end")
-        #radio_1.pack(side="left", padx=(5, 0))
+        
         radio_2.grid(row=0, column=2, pady=10)
         #entry to insert number of characters thats going to be deleted:
         validate_cmd=radio_buttons_frame.register(validate_insert_if_int)
@@ -132,27 +137,41 @@ def option_callback(choice):
         delete_entry.grid(row=1, column =1, pady=10)
 
         #button to send value and preview:
-        delete_process_button = ctk.CTkButton(
+        func_d_preview_button = ctk.CTkButton(
             master=radio_buttons_frame,
             text="Preview",
             command=delete_preview
         )
-        delete_process_button.grid(row=2, column=2, pady=10)
+        func_d_preview_button.grid(row=2, column=2, pady=10)
 
         #button to save changes to files
-        save_process_button = ctk.CTkButton(
+        func_d_save_button = ctk.CTkButton(
             master=radio_buttons_frame,
             text="SAVE CHANGES",
             command=save_delete_preview
         )
-        save_process_button.grid(row=2, column=3, pady=10)
+        func_d_save_button.grid(row=2, column=3, pady=10)
 
     elif choice =="Add":
+        
+
         title_label2.configure(text="Add")
+        #func_frame = ctk.CTkFrame(master=frame_2, width=400)
+        #func_frame.pack()
+        #another functionalities
+        
     elif choice =="Add numbering":
+        
         title_label2.configure(text="Add numbering")
+        func_frame = ctk.CTkFrame(master=frame_2, width=400)
+        
+
     elif choice =="Find and change":
+        
         title_label2.configure(text="Find and change")
+        func_frame = ctk.CTkFrame(master=frame_2, width=400)
+    
+    func_frame.pack()
 
 def delete_from_filenames(num_chars, position, list):
     #function that returns two list: new, modified and list with old and new paths
@@ -191,7 +210,14 @@ def update_table(new_list):
         name, format, date, full_path = item
         table1.insert('', 'end', values=(index, name, format, date))
 
+def clear_frame():
 
+    global func_frame
+    if 'func_frame' in globals() and func_frame.winfo_exists():
+        func_frame.destroy()
+    #else:
+    #    print (f"no frame found")
+    
 
 #GENERAL
 ctk.set_appearance_mode("system")
@@ -235,7 +261,7 @@ table1.heading('old_file_name', text = 'File name')
 table1.heading('new_file_name', text ='New file name')
 table1.heading('format', text = 'Format')
 table1.heading('date', text = 'Creation date')
-table1.pack()
+    table1.pack()
 
 
 #FRAME 2 - Choosing operation setting
@@ -253,6 +279,7 @@ optionmenu_1=ctk.CTkOptionMenu(master=frame_2,
                                 command=option_callback)
 optionmenu_1.set('Choose option')
 optionmenu_1.pack()
+
 
 title_label2 = ctk.CTkLabel(master=frame_2,height=20,width=100,
                            padx=10, pady=20,
