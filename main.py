@@ -103,11 +103,12 @@ def save_delete_preview():
 
 
 def option_callback(choice):
+    #function that displays elements needed for the function that has been selected
     global func_frame
 
+    clear_frame()
+
     if choice =="Delete":
-        #clear_frame()
-        
         #label with info:
         title_label2.configure(text="Can delete given number of chars from begginng or from end of choosen file names")
         #creating frame for specific function:
@@ -158,10 +159,21 @@ def option_callback(choice):
         clear_frame()
 
         title_label2.configure(text="Add")
+        func_frame = ctk.CTkFrame(master=frame_2, width=400)
+        func_frame.pack()
+        #another functionalities
+        
     elif choice =="Add numbering":
+        clear_frame()
         title_label2.configure(text="Add numbering")
+        func_frame = ctk.CTkFrame(master=frame_2, width=400)
+        func_frame.pack()
+        
     elif choice =="Find and change":
+        clear_frame()
         title_label2.configure(text="Find and change")
+        func_frame = ctk.CTkFrame(master=frame_2, width=400)
+        func_frame.pack()
 
 def delete_from_filenames(num_chars, position, list):
     #function that returns two list: new, modified and list with old and new paths
@@ -201,9 +213,9 @@ def update_table(new_list):
         table1.insert('', 'end', values=(index, name, format, date))
 
 def clear_frame():
-    #clears function frame if it existed
+
     global func_frame
-    if func_frame.winfo_exists():
+    if 'func_frame' in globals() and func_frame.winfo_exists():
         func_frame.destroy()
     else:
         print (f"no frame found")
