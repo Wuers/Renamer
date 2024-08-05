@@ -1,7 +1,6 @@
 import customtkinter as ctk
 from tkinter import filedialog as fd
 from tkinter import ttk
-import sys
 import os
 import datetime
 
@@ -261,7 +260,7 @@ table1.heading('old_file_name', text = 'File name')
 table1.heading('new_file_name', text ='New file name')
 table1.heading('format', text = 'Format')
 table1.heading('date', text = 'Creation date')
-    table1.pack()
+table1.pack()
 
 
 #FRAME 2 - Choosing operation setting
