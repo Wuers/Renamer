@@ -262,19 +262,4 @@ title_label2.pack()
 #preview table:
 prev_table = ctk.CTkTabview
 
-#letters_label= ctk.CTkLabel(frame_3, text = '')
-#letters_label.pack()
-
-#letters_number_input = ctk.CTkEntry(master = frame_3)
-#letters_number_input.pack()
-
-#preview_button = ctk.CTkButton(master = frame_3, text = 'Preview', command = preview_func)
-#preview_button.pack()
-
-
-#frame 3 - Preview of changes - table with files and aplied rules in e.g red 
-
-#frame 4 - Rename execute button
-
-#RUN
 window.mainloop()
