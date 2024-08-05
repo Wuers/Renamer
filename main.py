@@ -51,7 +51,6 @@ def f_add_button():
 
     return name_format_list
 
-
 def validate_insert_if_int(V):
     #function to validate if inserted character is int
     if V == "" or V.isdigit():
@@ -100,8 +99,6 @@ def save_delete_preview():
     # update table with new names
     update_table(modified_list)
     
-
-
 def option_callback(choice):
     #function that displays elements needed for the function that has been selected
     global func_frame
@@ -175,7 +172,6 @@ def option_callback(choice):
         func_frame = ctk.CTkFrame(master=frame_2, width=400)
     
     func_frame.pack()
-
 
 def delete_from_filenames(num_chars, position, list):
     #function that returns two list: new, modified and list with old and new paths
@@ -265,7 +261,7 @@ table1.heading('old_file_name', text = 'File name')
 table1.heading('new_file_name', text ='New file name')
 table1.heading('format', text = 'Format')
 table1.heading('date', text = 'Creation date')
-table1.pack()
+    table1.pack()
 
 
 #FRAME 2 - Choosing operation setting
