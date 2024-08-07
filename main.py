@@ -7,7 +7,7 @@ import datetime
 
 file_names_list = []
 #button functions
-def f_add_button():
+def add_files_button():
     #1 selecting files, returns list of files directories
     global file_paths_list
     file_paths_list = fd.askopenfilenames(
@@ -85,15 +85,8 @@ def delete_preview():
     if 'confirmation_label' in globals() and confirmation_label.winfo_exists():
         confirmation_label.destroy()
 
-    '''
-    confirmation_label = ctk.CTkLabel(
-    master = func_frame,
-    text = 'Changes saved!'
-    )
-    confirmation_label.pack()
-    '''
 
-def save_delete_preview():
+def delete_save():
     # call delete_from_filenames to get old and new file paths
     num_chars = get_delete_value()
     position = radio_var.get()
@@ -116,6 +109,9 @@ def save_delete_preview():
     text = 'Changes saved!'
     )
     confirmation_label.pack()
+    #deleting elements from list
+    for item in table1.get_children():
+        table1.delete(item)
     
 def option_callback(choice):
     #function that displays elements needed for the function that has been selected
@@ -166,7 +162,7 @@ def option_callback(choice):
         func_d_save_button = ctk.CTkButton(
             master=radio_buttons_frame,
             text="SAVE CHANGES",
-            command=save_delete_preview
+            command=delete_save
         )
         func_d_save_button.grid(row=2, column=3, pady=10)
 
@@ -233,8 +229,6 @@ def clear_frame():
     global func_frame
     if 'func_frame' in globals() and func_frame.winfo_exists():
         func_frame.destroy()
-    #else:
-    #    print (f"no frame found")
     
 
 #GENERAL
@@ -260,7 +254,7 @@ frame_1.pack(pady=10)
 #button - add_button for files
 file_add_button = ctk.CTkButton(master = frame_1,
                                 text='Add files',
-                                command=f_add_button
+                                command=add_files_button
                                 )
 file_add_button.pack()
 
