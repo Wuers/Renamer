@@ -37,7 +37,7 @@ def add_files_button():
       
         for index,file in enumerate(fetched_list, start=1):
             file_name, format, date, full_path = file
-            data = [index, file_name, format, date]
+            data = [index, file_name, '-', format, date]
             table1.insert(parent='', index='end', values=data)
         return fetched_list
                        
@@ -84,7 +84,6 @@ def delete_preview():
     global confirmation_label
     if 'confirmation_label' in globals() and confirmation_label.winfo_exists():
         confirmation_label.destroy()
-
 
 def delete_save():
     # call delete_from_filenames to get old and new file paths
@@ -199,8 +198,10 @@ def delete_from_filenames(num_chars, position, list):
             print (f"error when unpacking tuple 'item'. problematic element: {item}")
             continue
         if position == "beginning":
+            old_name = name
             new_name = name[num_chars:]
         elif position == "end":
+            old_name = name
             new_name = name[:-num_chars] if len(name) > num_chars else ""
         else:
             new_name = name
@@ -209,7 +210,7 @@ def delete_from_filenames(num_chars, position, list):
         #new_path = os.path.join(os.path.dirname(full_path), f"{new_name}.{format}")
         new_path = os.path.normpath(os.path.join(os.path.dirname(full_path), f"{new_name}.{format}"))
 
-        modified_list.append([new_name, format, date, new_path])
+        modified_list.append([new_name, old_name, format, date, new_path])
         old_and_new_path.append((old_path, new_path))
 
     return modified_list, old_and_new_path
@@ -221,8 +222,8 @@ def update_table(new_list):
         table1.delete(item)
     #add new preview
     for index, item in enumerate(new_list, start=1):
-        name, format, date, full_path = item
-        table1.insert('', 'end', values=(index, name, format, date))
+        name, old_name, format, date, full_path = item
+        table1.insert('', 'end', values=(index, name, old_name, format, date))
 
 def clear_frame():
 
@@ -237,7 +238,7 @@ ctk.set_default_color_theme("blue")
 #LAYOUT BELLOW
 #window
 window =ctk.CTk()
-window.title('Renamer by Wuers')
+window.title('Renamer by WiktorSadowski')
 window.geometry('800x800')
 #label - selection
 title_label = ctk.CTkLabel(window,height=20,width=100,
